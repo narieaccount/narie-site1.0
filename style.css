@@ -1,0 +1,250 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0a1e;
+  --text: #f4f1ff;
+  --muted: #b7b0d6;
+  --pink: #ff5fa2;
+  --purple: #8a5cff;
+  --blue: #3ec6ff;
+}
+
+/* Скрываем полосу прокрутки, но оставляем скролл */
+html, body { 
+  min-height: 100%; 
+  overflow-x: hidden;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+body {
+  font-family: "Nunito", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ---------- Фон ---------- */
+.bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  animation: float 14s ease-in-out infinite alternate;
+}
+.o1 { width: 50vw; height: 50vw; max-width: 420px; max-height: 420px; background: var(--purple); top: -10%; left: -10%; }
+.o2 { width: 45vw; height: 45vw; max-width: 380px; max-height: 380px; background: var(--pink); bottom: -10%; right: -10%; animation-delay: -5s; }
+.o3 { width: 40vw; height: 40vw; max-width: 300px; max-height: 300px; background: var(--blue); top: 40%; left: 55%; opacity: 0.35; animation-delay: -9s; }
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 40px) scale(1.15); }
+}
+
+/* ---------- Шапка ---------- */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 22px clamp(18px, 5vw, 56px);
+}
+
+.logo {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  font-size: clamp(26px, 5vw, 44px);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue), var(--pink));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 6s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(138, 92, 255, 0.55));
+  transition: transform 0.25s;
+}
+.logo:hover { transform: scale(1.05) rotate(-1.5deg); }
+
+/* --- НОВЫЙ КЛАСС ДЛЯ ВЕРСИИ --- */
+.version {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted); /* Серый цвет */
+  -webkit-text-fill-color: var(--muted); /* Перебиваем прозрачный цвет логотипа */
+  background: none; /* Убираем градиент */
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  margin-left: 6px;
+  vertical-align: super; /* Поднимаем текст чуть выше */
+  filter: none;
+}
+
+@keyframes shine {
+  to { background-position: 300% 0; }
+}
+
+/* ---------- Вкладки ---------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.tab {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); transform: translateY(-1px); }
+.tab.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  box-shadow: 0 6px 20px rgba(138, 92, 255, 0.45);
+}
+
+/* ---------- Содержимое ---------- */
+main {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 40px 5% 100px 10%; 
+  width: 100%;
+}
+
+.cards-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;     
+  gap: 30px;           
+  width: 100%;
+  max-width: 1100px;   
+}
+
+.panel { display: none; width: 100%; }
+.panel.active { display: block; animation: pop 0.5s cubic-bezier(.2, 1.3, .4, 1); }
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.card {
+  flex: 1;             
+  min-width: 300px;    
+  text-align: center;
+  padding: 44px 30px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  margin-bottom: 18px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 14px;
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(62, 198, 255, 0.12);
+  border: 1px solid rgba(62, 198, 255, 0.35);
+}
+
+.card h2 {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: clamp(20px, 4.5vw, 28px); 
+  line-height: 1.25;
+  margin-bottom: 28px;
+}
+
+/* ---------- Кнопка ---------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 38px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 4vw, 20px);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  box-shadow: 0 10px 30px rgba(255, 95, 162, 0.4);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 100%;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s;
+}
+.btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 40px rgba(255, 95, 162, 0.55); }
+.btn:hover::after { left: 130%; }
+.btn:active { transform: scale(0.97); }
+.arrow { transition: transform 0.2s; }
+.btn:hover .arrow { transform: translateX(5px); }
+
+/* ========================================================= */
+/* ---------- МОБИЛЬНАЯ ВЕРСИЯ ---------- */
+/* ========================================================= */
+@media (max-width: 768px) {
+  .top { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    text-align: left; 
+    padding: 16px; 
+    gap: 12px; 
+  }
+  
+  main {
+    justify-content: center; 
+    padding: 20px 16px 80px; 
+  }
+
+  .cards-wrapper {
+    flex-direction: column; 
+    max-width: 500px;       
+    gap: 20px;
+  }
+
+  .card { 
+    padding: 30px 20px; 
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%; 
+    padding: 14px 20px;
+  }
+}
